@@ -1,0 +1,137 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+    <main id="chaos-container">
+        <div id="email-box" class="hidden">
+            <h1>luka.mucko@gmail.com</h1>
+            <a href="/" class="back-link">← Back</a>
+        </div>
+    </main>
+</Layout>
+
+<style>
+    main {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background: white;
+    }
+
+    :global(.chaos-box) {
+        position: absolute;
+        font-family: "Courier New", Courier, monospace;
+        background: white;
+        border: 2px solid black;
+        padding: 0.8rem 2rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 6px 6px 0px black;
+        white-space: nowrap;
+        z-index: 1;
+        color: inherit;
+        transition:
+            transform 0.1s,
+            box-shadow 0.1s;
+    }
+    :global(.chaos-box:active) {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0px black;
+    }
+
+    #email-box {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border: 5px solid black;
+        padding: 4rem;
+        box-shadow: 20px 20px 0px black;
+        text-align: center;
+        z-index: 100;
+        min-width: 800px;
+    }
+
+    #email-box h1 {
+        font-size: 4rem;
+        margin: 0;
+        word-break: break-all;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 2rem;
+        color: black;
+        text-decoration: none;
+        font-weight: bold;
+        border-bottom: 2px solid black;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    @media (max-width: 768px) {
+        #email-box {
+            padding: 2rem;
+            width: 80%;
+        }
+        #email-box h1 {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<script>
+    const container = document.getElementById("chaos-container");
+    const emailBox = document.getElementById("email-box");
+    const buttonCount = 100;
+    const margin = 20;
+
+    if (container && emailBox) {
+        for (let i = 0; i < buttonCount; i++) {
+            const box = document.createElement("div");
+            box.className = "chaos-box";
+            box.textContent = "Email Me";
+
+            // Temporary append to calculate dimensions
+            box.style.visibility = "hidden";
+            container.appendChild(box);
+
+            const width = box.offsetWidth;
+            const height = box.offsetHeight;
+
+            // Random position with border avoidance
+            const maxX = window.innerWidth - width - margin;
+            const maxY = window.innerHeight - height - margin;
+            const minX = margin;
+            const minY = margin;
+
+            const x = Math.max(
+                minX,
+                Math.min(Math.random() * (maxX - minX) + minX, maxX),
+            );
+            const y = Math.max(
+                minY,
+                Math.min(Math.random() * (maxY - minY) + minY, maxY),
+            );
+
+            box.style.left = `${x}px`;
+            box.style.top = `${y}px`;
+            box.style.visibility = "visible";
+
+            box.addEventListener("click", () => {
+                // Hide all boxes
+                const allBoxes = document.querySelectorAll(".chaos-box");
+                allBoxes.forEach((b) => b.classList.add("hidden"));
+
+                // Show email box
+                emailBox.classList.remove("hidden");
+            });
+        }
+    }
+</script>

@@ -1,11 +1,156 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-	<Welcome />
+  <main>
+    <header>
+      <h1>Luka Mucko</h1>
+      <h2>Super slick professinal homepage coming soon</h2>
+    </header>
+    <section class="content">
+      <p>lorem ipsum:</p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+        mollit anim id est laborum.
+      </p>
+      <p>
+        Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam
+        varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus
+        magna felis sollicitudin libero. Mauris finibus sodales libero. Morbi
+        vestibulum volutpat enim. Sed leo. Quisque fugiat, mauris finibus
+        sodales libero, morbi vestibulum volutpat enim.
+      </p>
+      <button class="btn main-btn">Email Me</button>
+    </section>
+    <a href="/contact" class="btn secondary-btn">Or contact me here.</a>
+  </main>
 </Layout>
+<style>
+  main {
+    padding: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  header h1 {
+    font-family: 'Courier';
+    font-size: 2.5rem;
+    font-weight: normal;
+    margin: 0;
+  }
+  header h2 {
+    font-family: 'Courier';
+    font-size: 1.8rem;
+    font-weight: normal;
+    margin: 2rem 0;
+  }
+  .content {
+    max-width: 800px;
+    line-height: 1.4;
+    font-size: 1rem;
+  }
+  .content p {
+    margin: 0.5rem 0;
+  }
+  .btn {
+    font-family: "Courier New", Courier, monospace;
+    background: white;
+    border: 2px solid black;
+    padding: 0.8rem 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 6px 6px 0px black;
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    transition:
+      transform 0.1s,
+      box-shadow 0.1s;
+  }
+
+  .static-top-btn {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+  }
+  .btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px black;
+  }
+  .main-btn {
+    margin-top: 2rem;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    font-size: 1.5rem;
+  }
+  .secondary-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    font-size: 0.9rem;
+  }
+  @media (max-width: 768px) {
+    main {
+      padding: 2rem;
+    }
+    header h1 {
+      font-size: 1.8rem;
+    }
+    header h2 {
+      font-size: 1.4rem;
+    }
+    .secondary-btn {
+      position: static;
+      margin-top: 4rem;
+      display: block;
+      width: fit-content;
+    }
+  }
+</style>
+
+<script>
+  const btn = document.querySelector(".main-btn") as HTMLElement;
+
+  if (btn) {
+    btn.addEventListener("mouseover", (e: MouseEvent) => {
+      const rect = btn.getBoundingClientRect();
+      const offset = 200; // Max pixels to move
+      const minDistance = 100; // Minimum distance from cursor
+
+      let newX, newY;
+      let attempts = 0;
+      const maxX = window.innerWidth - btn.offsetWidth;
+      const maxY = window.innerHeight - btn.offsetHeight;
+
+      do {
+        newX = rect.left + (Math.random() - 0.5) * offset * 2;
+        newY = rect.top + (Math.random() - 0.5) * offset * 2;
+
+        newX = Math.max(0, Math.min(newX, maxX));
+        newY = Math.max(0, Math.min(newY, maxY));
+
+        const centerX = newX + btn.offsetWidth / 2;
+        const centerY = newY + btn.offsetHeight / 2;
+        const dist = Math.hypot(centerX - e.clientX, centerY - e.clientY);
+
+        if (dist > minDistance || attempts > 10) break;
+        attempts++;
+      } while (true);
+
+      btn.style.position = "fixed";
+      btn.style.left = newX + "px";
+      btn.style.top = newY + "px";
+    });
+  }
+</script>
