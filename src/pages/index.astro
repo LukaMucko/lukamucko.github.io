@@ -26,7 +26,10 @@ import Layout from "../layouts/Layout.astro";
         vestibulum volutpat enim. Sed leo. Quisque fugiat, mauris finibus
         sodales libero, morbi vestibulum volutpat enim.
       </p>
-      <button class="btn main-btn">Email Me</button>
+      <div class="button-group">
+        <a href="/blog" class="btn blog-btn">Blog</a>
+        <button class="btn main-btn">Email Me</button>
+      </div>
     </section>
     <a href="/contact" class="btn secondary-btn">Or contact me here.</a>
   </main>
@@ -60,6 +63,19 @@ import Layout from "../layouts/Layout.astro";
   .content p {
     margin: 0.5rem 0;
   }
+  .button-group .btn {
+    width: 200px;
+    text-align: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
   .btn {
     font-family: "Courier New", Courier, monospace;
     background: var(--bg-color);
@@ -89,7 +105,6 @@ import Layout from "../layouts/Layout.astro";
     box-shadow: 2px 2px 0px var(--shadow-color);
   }
   .main-btn {
-    margin-top: 2rem;
     font-weight: bold;
     padding: 0.8rem 2rem;
     font-size: 1.5rem;
