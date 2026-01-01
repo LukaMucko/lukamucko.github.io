@@ -1,0 +1,94 @@
+---
+import Layout from "./Layout.astro";
+const { frontmatter } = Astro.props;
+---
+
+<Layout>
+    <main>
+        <header>
+            <h1>{frontmatter.title}</h1>
+            <div class="meta">
+                {
+                    frontmatter.pubDate && (
+                        <time>{frontmatter.pubDate.slice(0, 10)}</time>
+                    )
+                }
+                <a href="/blog" class="back-link">← Back</a>
+            </div>
+        </header>
+        <article class="content">
+            <slot />
+        </article>
+    </main>
+</Layout>
+
+<style>
+    main {
+        padding: 4rem;
+        max-width: 800px;
+        margin: 0 auto;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
+    header {
+        margin-bottom: 3rem;
+        border-bottom: 2px solid var(--text-color);
+        padding-bottom: 1rem;
+    }
+    header h1 {
+        font-family: "Courier";
+        font-size: 2.5rem;
+        font-weight: normal;
+        margin: 0 0 0.5rem 0;
+    }
+    .meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.9rem;
+    }
+    .back-link {
+        color: var(--text-color);
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .back-link:hover {
+        text-decoration: underline;
+    }
+    .content {
+        font-family: "Courier New", Courier, monospace;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    /* Brutalist typography for markdown content */
+    .content :global(h1),
+    .content :global(h2),
+    .content :global(h3) {
+        font-family: "Courier";
+        font-weight: normal;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+    .content :global(p) {
+        margin-bottom: 1.5rem;
+    }
+    .content :global(a) {
+        color: var(--text-color);
+        text-decoration: underline;
+    }
+    .content :global(code) {
+        background: var(--text-color);
+        color: var(--bg-color);
+        padding: 0.2rem 0.4rem;
+        font-size: 0.9rem;
+    }
+    .content :global(pre) {
+        background: #222;
+        color: #fff;
+        padding: 1rem;
+        overflow-x: auto;
+        border: 2px solid var(--text-color);
+        box-shadow: 4px 4px 0px var(--shadow-color);
+    }
+</style>

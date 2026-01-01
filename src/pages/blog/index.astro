@@ -1,5 +1,13 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+const allPosts = await Astro.glob("./*.md");
+// Sort posts by date if available, otherwise by title or filename
+const sortedPosts = allPosts.sort((a, b) => {
+    return (
+        new Date(b.frontmatter.pubDate || 0).valueOf() -
+        new Date(a.frontmatter.pubDate || 0).valueOf()
+    );
+});
 ---
 
 <Layout>
@@ -8,9 +16,36 @@ import Layout from "../../layouts/Layout.astro";
             <h1>Blog</h1>
             <a href="/" class="back-link">← Back</a>
         </header>
-        <section class="content">
-            <p>Coming soon...</p>
-        </section>
+        <div class="post-list">
+            {
+                sortedPosts.length === 0 ? (
+                    <p>No posts yet.</p>
+                ) : (
+                    sortedPosts.map((post) => (
+                        <article class="post-item">
+                            <a href={post.url} class="post-link">
+                                <div class="post-header">
+                                    <span class="post-title">
+                                        {post.frontmatter.title}
+                                    </span>
+                                    <span class="post-date">
+                                        {post.frontmatter.pubDate
+                                            ? post.frontmatter.pubDate.slice(
+                                                  0,
+                                                  10,
+                                              )
+                                            : ""}
+                                    </span>
+                                </div>
+                                <p class="post-description">
+                                    {post.frontmatter.description}
+                                </p>
+                            </a>
+                        </article>
+                    ))
+                )
+            }
+        </div>
     </main>
 </Layout>
 
@@ -32,13 +67,67 @@ import Layout from "../../layouts/Layout.astro";
     .back-link {
         display: inline-block;
         margin-top: 1rem;
+        margin-bottom: 3rem;
         color: var(--text-color);
         text-decoration: none;
         font-weight: bold;
         border-bottom: 2px solid var(--text-color);
     }
-    .content {
-        margin-top: 2rem;
+    .post-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .post-item {
+        border: 2px solid var(--text-color);
+        box-shadow: 4px 4px 0px var(--shadow-color);
+        background: var(--bg-color);
+        transition:
+            transform 0.1s,
+            box-shadow 0.1s;
+    }
+    .post-item:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px var(--shadow-color);
+    }
+    .post-link {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem 1.5rem;
+        color: var(--text-color);
+        text-decoration: none;
+        font-family: "Courier New", Courier, monospace;
+    }
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+    .post-title {
+        font-weight: bold;
         font-size: 1.2rem;
+    }
+    .post-date {
+        color: var(--text-color);
+        opacity: 0.7;
+        font-size: 0.9rem;
+    }
+    .post-description {
+        margin: 0;
+        font-size: 1rem;
+        opacity: 0.9;
+        line-height: 1.4;
+    }
+    @media (max-width: 600px) {
+        .post-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.2rem;
+        }
+        .post-date {
+            font-size: 0.8rem;
+        }
     }
 </style>
