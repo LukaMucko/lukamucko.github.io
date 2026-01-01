@@ -17,19 +17,19 @@ import Layout from "../layouts/Layout.astro";
         width: 100vw;
         height: 100vh;
         overflow: hidden;
-        background: white;
+        background: var(--bg-color);
     }
 
     :global(.chaos-box) {
         position: absolute;
         font-family: "Courier New", Courier, monospace;
-        background: white;
-        border: 2px solid black;
+        background: var(--bg-color);
+        border: 2px solid var(--text-color);
         padding: 0.8rem 2rem;
         font-size: 1.5rem;
         font-weight: bold;
         cursor: pointer;
-        box-shadow: 6px 6px 0px black;
+        box-shadow: 6px 6px 0px var(--shadow-color);
         white-space: nowrap;
         z-index: 1;
         color: inherit;
@@ -39,7 +39,7 @@ import Layout from "../layouts/Layout.astro";
     }
     :global(.chaos-box:active) {
         transform: translate(2px, 2px);
-        box-shadow: 2px 2px 0px black;
+        box-shadow: 2px 2px 0px var(--shadow-color);
     }
 
     #email-box {
@@ -47,10 +47,10 @@ import Layout from "../layouts/Layout.astro";
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: white;
-        border: 5px solid black;
+        background: var(--bg-color);
+        border: 5px solid var(--text-color);
         padding: 4rem;
-        box-shadow: 20px 20px 0px black;
+        box-shadow: 20px 20px 0px var(--shadow-color);
         text-align: center;
         z-index: 100;
         min-width: 800px;
@@ -65,10 +65,10 @@ import Layout from "../layouts/Layout.astro";
     .back-link {
         display: inline-block;
         margin-top: 2rem;
-        color: black;
+        color: var(--text-color);
         text-decoration: none;
         font-weight: bold;
-        border-bottom: 2px solid black;
+        border-bottom: 2px solid var(--text-color);
     }
 
     .hidden {
@@ -94,7 +94,7 @@ import Layout from "../layouts/Layout.astro";
 
     if (container && emailBox) {
         for (let i = 0; i < buttonCount; i++) {
-            const box = document.createElement("div");
+            const box = document.createElement("button");
             box.className = "chaos-box";
             box.textContent = "Email Me";
 
