@@ -6,6 +6,23 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Luka Mucko</title>
+		<script is:inline>
+			const savedTheme = localStorage.getItem("theme");
+			const systemTheme = window.matchMedia(
+				"(prefers-color-scheme: dark)",
+			).matches
+				? "dark"
+				: "light";
+
+			if (
+				savedTheme === "dark" ||
+				(!savedTheme && systemTheme === "dark")
+			) {
+				document.documentElement.classList.add("dark");
+			} else {
+				document.documentElement.classList.remove("dark");
+			}
+		</script>
 	</head>
 	<body>
 		<slot />
@@ -78,17 +95,6 @@
 
 <script>
 	const themeToggle = document.getElementById("theme-toggle");
-
-	// Check for saved theme preference or system preference
-	const savedTheme = localStorage.getItem("theme");
-	const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-		.matches
-		? "dark"
-		: "light";
-
-	if (savedTheme === "dark" || (!savedTheme && systemTheme === "dark")) {
-		document.documentElement.classList.add("dark");
-	}
 
 	if (themeToggle) {
 		themeToggle.addEventListener("click", () => {
