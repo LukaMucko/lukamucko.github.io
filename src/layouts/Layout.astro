@@ -6,6 +6,15 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Luka Mucko</title>
+
+		<!-- Fira Code Font -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+
 		<script is:inline>
 			const savedTheme = localStorage.getItem("theme");
 			const systemTheme = window.matchMedia(
@@ -44,27 +53,66 @@
 
 <style is:global>
 	:root {
-		--bg-color: white;
-		--text-color: black;
-		--shadow-color: black;
+		--bg-color: #ffffff;
+		--text-color: #000000;
+		--shadow-color: #000000;
+
+		--astro-code-color-text: var(--text-color);
+		--astro-code-color-background: transparent;
+		--astro-code-token-constant: var(--text-color);
+		--astro-code-token-string: var(--text-color);
+		--astro-code-token-comment: var(--text-color);
+		--astro-code-token-keyword: var(--text-color);
+		--astro-code-token-parameter: var(--text-color);
+		--astro-code-token-function: var(--text-color);
+		--astro-code-token-string-expression: var(--text-color);
+		--astro-code-token-punctuation: var(--text-color);
+		--astro-code-token-link: var(--text-color);
 	}
-	:root.dark {
-		--bg-color: #121212;
-		--text-color: white;
-		--shadow-color: white;
+
+	:global(.dark) {
+		--bg-color: #000000;
+		--text-color: #ffffff;
+		--shadow-color: #ffffff;
 	}
-	html,
-	body {
-		margin: 0;
-		padding: 0;
-		width: 100%;
+
+	html {
 		height: 100%;
-		font-family: "Courier New", Courier, monospace;
+		width: 100%;
+	}
+
+	body {
 		background-color: var(--bg-color);
 		color: var(--text-color);
+		font-family: "Courier New", Courier, monospace;
 		transition:
 			background-color 0.3s,
 			color 0.3s;
+		margin: 0;
+		padding: 0;
+		min-height: 100%;
+		width: 100%;
+	}
+
+	/* Global Code Styles */
+	:global(code),
+	:global(pre) {
+		font-family: "Fira Code", monospace !important;
+	}
+	:global(pre) {
+		padding: 1rem;
+		border: 1px solid var(--text-color);
+		box-shadow: none;
+		background-color: transparent !important;
+		overflow-x: auto;
+	}
+	:global(code) {
+		background-color: transparent !important;
+		color: var(--text-color) !important;
+	}
+	:global(.astro-code span) {
+		color: var(--text-color) !important;
+		background-color: transparent !important;
 	}
 
 	#theme-toggle {

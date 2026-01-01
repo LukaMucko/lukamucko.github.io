@@ -1,0 +1,32 @@
+{
+    "data": [
+        {
+            "x": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "y": [
+                10,
+                15,
+                13,
+                17
+            ],
+            "type": "scatter",
+            "mode": "lines+markers",
+            "marker": {
+                "color": "red"
+            }
+        }
+    ],
+    "layout": {
+        "title": "My Brutalist Chart",
+        "xaxis": {
+            "title": "Time"
+        },
+        "yaxis": {
+            "title": "Value"
+        }
+    }
+}

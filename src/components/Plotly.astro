@@ -1,0 +1,6 @@
+---
+import PlotlyPlot from "./PlotlyPlot.jsx";
+const { src } = Astro.props;
+---
+
+<PlotlyPlot client:only="react" src={src} />
