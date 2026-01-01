@@ -3,10 +3,11 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "node scripts/nb-processor.mjs --watch & astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "gen-blog": "node scripts/nb-processor.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",

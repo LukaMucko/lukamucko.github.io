@@ -98,14 +98,12 @@ import Layout from "../layouts/Layout.astro";
             box.className = "chaos-box";
             box.textContent = "Email Me";
 
-            // Temporary append to calculate dimensions
             box.style.visibility = "hidden";
             container.appendChild(box);
 
             const width = box.offsetWidth;
             const height = box.offsetHeight;
 
-            // Random position with border avoidance
             const maxX = window.innerWidth - width - margin;
             const maxY = window.innerHeight - height - margin;
             const minX = margin;
@@ -125,11 +123,9 @@ import Layout from "../layouts/Layout.astro";
             box.style.visibility = "visible";
 
             box.addEventListener("click", () => {
-                // Hide all boxes
                 const allBoxes = document.querySelectorAll(".chaos-box");
                 allBoxes.forEach((b) => b.classList.add("hidden"));
 
-                // Show email box
                 emailBox.classList.remove("hidden");
             });
         }

@@ -1,7 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-const allPosts = await Astro.glob("./*.md");
-// Sort posts by date if available, otherwise by title or filename
+const allPosts = await Astro.glob("./*.{md,mdx}");
 const sortedPosts = allPosts.sort((a, b) => {
     return (
         new Date(b.frontmatter.pubDate || 0).valueOf() -
