@@ -88,9 +88,9 @@ import Layout from "../layouts/Layout.astro";
     text-decoration: none;
     color: inherit;
     display: inline-block;
-    transition:
-      transform 0.1s,
-      box-shadow 0.1s;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.1s;
   }
 
   .static-top-btn {
@@ -136,6 +136,7 @@ import Layout from "../layouts/Layout.astro";
 </style>
 
 <script>
+  /* Existing runaway button code... */
   const btn = document.querySelector(".main-btn") as HTMLElement;
 
   if (btn) {

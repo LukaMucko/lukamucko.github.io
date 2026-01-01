@@ -19,8 +19,8 @@ Because I like:
 
 Here is some code just to test the styling:
 
-```javascript
-console.log("Hello, World!");
+```python
+import faker
 ```
 
 Enjoy the stay!
