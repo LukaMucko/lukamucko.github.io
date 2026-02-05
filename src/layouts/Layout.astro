@@ -6,6 +6,22 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Luka Mucko</title>
+		<meta
+			name="description"
+			content="Personal site, notes, and experiments by Luka Mucko."
+		/>
+		<meta property="og:title" content="Luka Mucko" />
+		<meta
+			property="og:description"
+			content="Personal site, notes, and experiments by Luka Mucko."
+		/>
+		<meta property="og:type" content="website" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content="Luka Mucko" />
+		<meta
+			name="twitter:description"
+			content="Personal site, notes, and experiments by Luka Mucko."
+		/>
 
 		<!-- Fira Code Font -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -142,6 +158,12 @@
 
 	#theme-toggle svg {
 		pointer-events: none;
+	}
+
+	a:focus-visible,
+	button:focus-visible {
+		outline: 2px dashed var(--text-color);
+		outline-offset: 4px;
 	}
 </style>
 

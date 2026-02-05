@@ -68,11 +68,9 @@ print("Processing complete.")
 # 10
 ```
 
-```text
-Generating 50 points of noise...
+<pre className="nb-output-text">{`Generating 50 points of noise...
 Processing complete.
-
-```
+`}</pre>
 
 ## 2. Static Image (Matplotlib - Real)
 This plot is generated locally by Matplotlib.
@@ -94,7 +92,7 @@ plt.grid(True, alpha=0.3)
 plt.show()
 ```
 
-![Notebook Output](/nb-assets/comprehensive_test/30d63cd9.png)
+<img class="nb-output-image" src="/nb-assets/comprehensive_test/30d63cd9.png" alt="Notebook output"/>
 
 ## 3. Interactive HTML (Plotly - Real)
 This interactive chart is generated locally by Plotly Express.
@@ -115,7 +113,8 @@ fig = px.bar(df, x="Fruit", y="Number Eaten", color="Contestant", barmode="group
 fig.show()
 ```
 
-<iframe src="/nb-assets/comprehensive_test/3db4cfd5.html" class="nb-output-frame" style="width:100%; height: 300px; border:none; display:block; margin: 0.5rem 0;"></iframe>
+<iframe id="nb-frame-3db4cfd5" src="/nb-assets/comprehensive_test/3db4cfd5.html" class="nb-output-frame" title="Notebook output 5-0" loading="lazy"></iframe>
+
 ## 4. Text Output
 Verifying standard output.
 
@@ -124,9 +123,7 @@ print("If you see the plots above, uv execution works!")
 print(f"Random check: {random.randint(1, 100)}")
 ```
 
-```text
-If you see the plots above, uv execution works!
+<pre className="nb-output-text">{`If you see the plots above, uv execution works!
 Random check: 48
-
-```
+`}</pre>
 

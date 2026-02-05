@@ -7,6 +7,16 @@ const sortedPosts = allPosts.sort((a, b) => {
         new Date(a.frontmatter.pubDate || 0).valueOf()
     );
 });
+const formatDate = (value) => {
+    if (!value) return "";
+    const date = value instanceof Date ? value : new Date(value);
+    if (Number.isNaN(date.valueOf())) return "";
+    return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+    });
+};
 ---
 
 <Layout>
@@ -28,16 +38,11 @@ const sortedPosts = allPosts.sort((a, b) => {
                                         {post.frontmatter.title}
                                     </span>
                                     <span class="post-date">
-                                        {post.frontmatter.pubDate
-                                            ? post.frontmatter.pubDate.slice(
-                                                  0,
-                                                  10,
-                                              )
-                                            : ""}
+                                        {formatDate(post.frontmatter.pubDate)}
                                     </span>
                                 </div>
                                 <p class="post-description">
-                                    {post.frontmatter.description}
+                                    {post.frontmatter.description || ""}
                                 </p>
                             </a>
                         </article>
@@ -107,6 +112,10 @@ const sortedPosts = allPosts.sort((a, b) => {
     .post-title {
         font-weight: bold;
         font-size: 1.2rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
     .post-date {
         color: var(--text-color);

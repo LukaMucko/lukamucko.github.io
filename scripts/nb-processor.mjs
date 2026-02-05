@@ -8,6 +8,7 @@ const notebooksDir = path.join(__dirname, '../src/notebooks');
 const blogDir = path.join(__dirname, '../src/pages/blog');
 const publicNbAssetsDir = path.join(__dirname, '../public/nb-assets');
 const cachePath = path.join(__dirname, '.nb-cache.json');
+const CACHE_VERSION = '4';
 
 if (!fs.existsSync(publicNbAssetsDir)) fs.mkdirSync(publicNbAssetsDir, { recursive: true });
 if (!fs.existsSync(blogDir)) fs.mkdirSync(blogDir, { recursive: true });
@@ -31,6 +32,38 @@ function normalizeSource(source) {
     return Array.isArray(source) ? source.join('') : (source || '');
 }
 
+function escapeTemplateLiteral(value) {
+    return value
+        .replace(/\\/g, '\\\\')
+        .replace(/`/g, '\\`')
+        .replace(/\$\{/g, '\\${');
+}
+
+function buildIframeHtml(bodyContent, extraHead = '', extraScript = '') {
+    const resizeScript = `
+<script>
+(() => {
+    const send = () => {
+        const height = document.documentElement.scrollHeight;
+        const id = window.frameElement && window.frameElement.id;
+        if (parent) parent.postMessage({ type: 'nb-iframe-height', id, height }, '*');
+    };
+    window.__nbSendHeight = send;
+    const onReady = () => {
+        send();
+        if (window.ResizeObserver) {
+            new ResizeObserver(send).observe(document.body);
+        } else {
+            setInterval(send, 1000);
+        }
+    };
+    window.addEventListener('load', onReady);
+})();
+</script>`;
+
+    return `<!doctype html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><style>body{margin:0;padding:0;background:transparent;}</style>${extraHead}</head><body>${bodyContent}${extraScript}${resizeScript}</body></html>`;
+}
+
 function processNotebook(filename) {
     if (!filename.endsWith('.ipynb')) return;
 
@@ -40,7 +73,8 @@ function processNotebook(filename) {
     const rawData = fs.readFileSync(filePath, 'utf-8');
     const currentHash = getHash(rawData);
 
-    if (cache[filename] === currentHash) return;
+    const cacheKey = `${CACHE_VERSION}:${currentHash}`;
+    if (cache[filename] === cacheKey) return;
 
     console.log(`Processing: ${filename}`);
 
@@ -76,22 +110,26 @@ function processNotebook(filename) {
                 if (cell.outputs) {
                     cell.outputs.forEach((output, outIndex) => {
                         const hash = crypto.createHash('md5').update(`${slug}-${index}-${outIndex}-${JSON.stringify(output)}`).digest('hex').substring(0, 8);
+                        const frameId = `nb-frame-${hash}`;
 
                         if (output.data && output.data['application/vnd.plotly.v1+json']) {
                             const assetName = `${hash}.html`;
                             const assetPath = path.join(assetsDir, assetName);
                             const plotlyData = output.data['application/vnd.plotly.v1+json'];
-                            const fullHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><script src="https://cdn.plot.ly/plotly-latest.min.js"></script><style>body{margin:0;padding:0;overflow:hidden;}</style></head><body><div id="plot" style="width:100%;height:100%;"></div><script>var d=${JSON.stringify(plotlyData)};Plotly.newPlot('plot', d.data, d.layout, {responsive: true});</script></body></html>`;
+                            const plotlyHead = '<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>';
+                            const plotlyBody = '<div id="plot" style="width:100%;height:100%;"></div>';
+                            const plotlyScript = `<script>var d=${JSON.stringify(plotlyData)};Plotly.newPlot('plot', d.data, d.layout, {responsive: true}).then(function(){ if (window.__nbSendHeight) window.__nbSendHeight(); });</script>`;
+                            const fullHtml = buildIframeHtml(plotlyBody, plotlyHead, plotlyScript);
                             fs.writeFileSync(assetPath, fullHtml);
-                            mdxContent += `<iframe src="/nb-assets/${slug}/${assetName}" class="nb-output-frame" style="width:100%; height: 300px; border:none; display:block; margin: 0.5rem 0;"></iframe>\n`;
+                            mdxContent += `<iframe id="${frameId}" src="/nb-assets/${slug}/${assetName}" class="nb-output-frame" title="Notebook output ${index}-${outIndex}" loading="lazy"></iframe>\n\n`;
                         } else if (output.data && output.data['text/html']) {
                             const htmlContent = normalizeSource(output.data['text/html']);
                             const assetName = `${hash}.html`;
                             const assetPath = path.join(assetsDir, assetName);
-                            const fullHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/><style>body{margin:0;padding:0;overflow:hidden;}</style></head><body>${htmlContent}</body></html>`;
+                            const fullHtml = buildIframeHtml(htmlContent);
                             fs.writeFileSync(assetPath, fullHtml);
 
-                            mdxContent += `<iframe src="/nb-assets/${slug}/${assetName}" class="nb-output-frame" style="width:100%; border:none; display:block; margin: 0.5rem 0;"></iframe>\n`;
+                            mdxContent += `<iframe id="${frameId}" src="/nb-assets/${slug}/${assetName}" class="nb-output-frame" title="Notebook output ${index}-${outIndex}" loading="lazy"></iframe>\n\n`;
                         } else if (output.data && (output.data['image/png'] || output.data['image/jpeg'])) {
                             const isPng = !!output.data['image/png'];
                             const imgData = isPng ? output.data['image/png'] : output.data['image/jpeg'];
@@ -99,10 +137,25 @@ function processNotebook(filename) {
                             const assetName = `${hash}.${ext}`;
                             const assetPath = path.join(assetsDir, assetName);
                             fs.writeFileSync(assetPath, Buffer.from(imgData, 'base64'));
-                            mdxContent += `![Notebook Output](/nb-assets/${slug}/${assetName})\n\n`;
+                            mdxContent += `<img class="nb-output-image" src="/nb-assets/${slug}/${assetName}" alt="Notebook output"/>\n\n`;
+                        } else if (output.data && output.data['image/svg+xml']) {
+                            const svgData = normalizeSource(output.data['image/svg+xml']);
+                            const assetName = `${hash}.svg`;
+                            const assetPath = path.join(assetsDir, assetName);
+                            fs.writeFileSync(assetPath, svgData, 'utf8');
+                            mdxContent += `<img class="nb-output-image" src="/nb-assets/${slug}/${assetName}" alt="Notebook output"/>\n\n`;
+                        } else if (output.data && output.data['text/plain']) {
+                            const textOut = normalizeSource(output.data['text/plain']);
+                            if (textOut.trim()) {
+                                const safe = escapeTemplateLiteral(textOut);
+                                mdxContent += '<pre className="nb-output-text">{`' + safe + '`}</pre>\n\n';
+                            }
                         } else if (output.text) {
                             const textOut = normalizeSource(output.text);
-                            if (textOut.trim()) mdxContent += "```text\n" + textOut + "\n```\n\n";
+                            if (textOut.trim()) {
+                                const safe = escapeTemplateLiteral(textOut);
+                                mdxContent += '<pre className="nb-output-text">{`' + safe + '`}</pre>\n\n';
+                            }
                         }
                     });
                 }
@@ -112,7 +165,7 @@ function processNotebook(filename) {
         const mdxPath = path.join(blogDir, `${slug}.mdx`);
         fs.writeFileSync(mdxPath, mdxContent);
 
-        cache[filename] = currentHash;
+        cache[filename] = cacheKey;
         saveCache();
         console.log(`Converted ${filename} -> ${slug}.mdx`);
     } catch (err) {
