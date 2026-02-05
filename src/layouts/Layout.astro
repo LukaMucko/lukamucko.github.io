@@ -6,6 +6,22 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Luka Mucko</title>
+		<meta
+			name="description"
+			content="Personal site, notes, and experiments by Luka Mucko."
+		/>
+		<meta property="og:title" content="Luka Mucko" />
+		<meta
+			property="og:description"
+			content="Personal site, notes, and experiments by Luka Mucko."
+		/>
+		<meta property="og:type" content="website" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content="Luka Mucko" />
+		<meta
+			name="twitter:description"
+			content="Personal site, notes, and experiments by Luka Mucko."
+		/>
 
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,20 +31,23 @@
 		/>
 
 		<script is:inline>
-			const savedTheme = localStorage.getItem("theme");
-			const systemTheme = window.matchMedia(
-				"(prefers-color-scheme: dark)",
-			).matches
-				? "dark"
-				: "light";
+			const params = new URLSearchParams(window.location.search);
+			const requestedTheme = params.get("theme");
+			const savedAccent = localStorage.getItem("accent-theme");
 
-			if (
-				savedTheme === "dark" ||
-				(!savedTheme && systemTheme === "dark")
-			) {
-				document.documentElement.classList.add("dark");
-			} else {
+			if (requestedTheme) {
+				document.documentElement.dataset.theme = requestedTheme;
+				localStorage.setItem("accent-theme", requestedTheme);
+			} else if (savedAccent) {
+				document.documentElement.dataset.theme = savedAccent;
+			}
+
+			const savedTheme = localStorage.getItem("theme");
+			if (savedTheme === "light") {
 				document.documentElement.classList.remove("dark");
+			} else {
+				// Default to dark when no preference is saved
+				document.documentElement.classList.add("dark");
 			}
 		</script>
 	</head>
@@ -52,9 +71,10 @@
 
 <style is:global>
 	:root {
-		--bg-color: #ffffff;
-		--text-color: #000000;
-		--shadow-color: #000000;
+		--bg-color: #1b211a;
+		--text-color: #ebd5ab;
+		--shadow-color: #628141;
+		--accent-color: #8bae66;
 
 		--astro-code-color-text: var(--text-color);
 		--astro-code-color-background: transparent;
@@ -70,9 +90,14 @@
 	}
 
 	html.dark {
-		--bg-color: #000000;
-		--text-color: #ffffff;
-		--shadow-color: #ffffff;
+		--bg-color: #1b211a;
+		--text-color: #ebd5ab;
+		--shadow-color: #628141;
+		--accent-color: #8bae66;
+	}
+
+	html[data-theme="pthalo"] {
+		--accent-color: #123524;
 	}
 
 	html {
@@ -91,6 +116,7 @@
 		padding: 0;
 		min-height: 100%;
 		width: 100%;
+		overflow-x: hidden;
 	}
 
 	/* Global Code Styles */
@@ -99,10 +125,10 @@
 		font-family: "Fira Code", monospace !important;
 	}
 	:global(pre) {
-		padding: 1rem;
-		border: 1px solid var(--text-color);
-		box-shadow: none;
-		background-color: transparent !important;
+		padding: 1rem 1.2rem;
+		border: 1px solid var(--accent-color);
+		box-shadow: 6px 6px 0px var(--shadow-color);
+		background-color: #161b15 !important;
 		overflow-x: auto;
 	}
 	:global(code) {
@@ -112,6 +138,56 @@
 	:global(.astro-code span) {
 		color: var(--text-color) !important;
 		background-color: transparent !important;
+	}
+	:global(.astro-code span.token.keyword),
+	:global(.astro-code span.token.function),
+	:global(.astro-code span.token.string),
+	:global(.astro-code span.token.number) {
+		color: var(--accent-color) !important;
+	}
+	:global(math) {
+		display: none !important;
+	}
+	:global(.katex-display) {
+		overflow-x: auto;
+		overflow-y: hidden;
+		max-width: 100%;
+	}
+	:global(.katex .stretchy svg),
+	:global(.katex svg[width$="em"]) {
+		display: none !important;
+	}
+	:global(.katex .pstrut),
+	:global(.katex .hide-tail) {
+		display: none !important;
+	}
+	:global(.katex-display > .katex) {
+		white-space: normal;
+	}
+
+	.btn {
+		font-family: "Courier New", Courier, monospace;
+		background: var(--bg-color);
+		border: 2px solid var(--text-color);
+		padding: 0.8rem 2rem;
+		font-size: 1.5rem;
+		font-weight: bold;
+		cursor: pointer;
+		box-shadow: 6px 6px 0px var(--accent-color);
+		text-decoration: none;
+		color: inherit;
+		display: inline-block;
+		position: relative;
+		z-index: 1;
+		transition: transform 0.1s;
+	}
+	.btn:active {
+		transform: translate(2px, 2px);
+		box-shadow: 2px 2px 0px var(--accent-color);
+	}
+	.btn:hover {
+		border-color: var(--accent-color);
+		color: var(--accent-color);
 	}
 
 	#theme-toggle {
@@ -141,6 +217,16 @@
 
 	#theme-toggle svg {
 		pointer-events: none;
+	}
+
+	a:focus-visible,
+	button:focus-visible {
+		outline: 2px dashed var(--accent-color);
+		outline-offset: 4px;
+	}
+
+	a:hover {
+		color: var(--accent-color);
 	}
 </style>
 

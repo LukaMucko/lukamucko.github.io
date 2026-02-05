@@ -3,9 +3,12 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-    <main id="chaos-container">
-        <div id="email-box" class="hidden">
-            <h1>luka.mucko@gmail.com</h1>
+    <main id="contact-container">
+        <button id="reveal-email" class="btn reveal-btn" type="button">
+            Email Me
+        </button>
+        <div id="email-box" class="hidden" aria-live="polite">
+            <h1 id="email-text">reveal in progress</h1>
             <a href="/" class="back-link">← Back</a>
         </div>
     </main>
@@ -20,26 +23,16 @@ import Layout from "../layouts/Layout.astro";
         background: var(--bg-color);
     }
 
-    :global(.chaos-box) {
-        position: absolute;
-        font-family: "Courier New", Courier, monospace;
-        background: var(--bg-color);
-        border: 2px solid var(--text-color);
-        padding: 0.8rem 2rem;
-        font-size: 1.5rem;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 6px 6px 0px var(--shadow-color);
+    .reveal-btn {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         white-space: nowrap;
         z-index: 1;
-        color: inherit;
-        transition:
-            transform 0.1s,
-            box-shadow 0.1s;
     }
-    :global(.chaos-box:active) {
-        transform: translate(2px, 2px);
-        box-shadow: 2px 2px 0px var(--shadow-color);
+    .reveal-btn:active {
+        transform: translate(calc(-50% + 2px), calc(-50% + 2px));
     }
 
     #email-box {
@@ -53,7 +46,6 @@ import Layout from "../layouts/Layout.astro";
         box-shadow: 20px 20px 0px var(--shadow-color);
         text-align: center;
         z-index: 100;
-        min-width: 800px;
     }
 
     #email-box h1 {
@@ -87,47 +79,34 @@ import Layout from "../layouts/Layout.astro";
 </style>
 
 <script>
-    const container = document.getElementById("chaos-container");
     const emailBox = document.getElementById("email-box");
-    const buttonCount = 100;
-    const margin = 20;
+    const emailText = document.getElementById("email-text");
+    const revealButton = document.getElementById("reveal-email");
+    const encodedEmail = "BxASCksUHgYSBCUeBgQQB0saBAg=";
+    const key = "key";
 
-    if (container && emailBox) {
-        for (let i = 0; i < buttonCount; i++) {
-            const box = document.createElement("button");
-            box.className = "chaos-box";
-            box.textContent = "Email Me";
-
-            box.style.visibility = "hidden";
-            container.appendChild(box);
-
-            const width = box.offsetWidth;
-            const height = box.offsetHeight;
-
-            const maxX = window.innerWidth - width - margin;
-            const maxY = window.innerHeight - height - margin;
-            const minX = margin;
-            const minY = margin;
-
-            const x = Math.max(
-                minX,
-                Math.min(Math.random() * (maxX - minX) + minX, maxX),
+    const decodeEmail = (encoded, secret) => {
+        const bytes = Uint8Array.from(atob(encoded), (c) => c.charCodeAt(0));
+        let result = "";
+        for (let i = 0; i < bytes.length; i++) {
+            result += String.fromCharCode(
+                bytes[i] ^ secret.charCodeAt(i % secret.length),
             );
-            const y = Math.max(
-                minY,
-                Math.min(Math.random() * (maxY - minY) + minY, maxY),
-            );
-
-            box.style.left = `${x}px`;
-            box.style.top = `${y}px`;
-            box.style.visibility = "visible";
-
-            box.addEventListener("click", () => {
-                const allBoxes = document.querySelectorAll(".chaos-box");
-                allBoxes.forEach((b) => b.classList.add("hidden"));
-
-                emailBox.classList.remove("hidden");
-            });
         }
+        return result;
+    };
+
+    const revealEmail = () => {
+        if (!emailBox || !emailText) return;
+        const decoded = decodeEmail(encodedEmail, key);
+        emailText.textContent = decoded;
+        emailBox.classList.remove("hidden");
+        if (revealButton) {
+            revealButton.classList.add("hidden");
+        }
+    };
+
+    if (revealButton) {
+        revealButton.addEventListener("click", revealEmail);
     }
 </script>
