@@ -53,19 +53,6 @@
 	</head>
 	<body>
 		<slot />
-		<button id="theme-toggle" aria-label="Toggle Dark Mode">
-			<svg
-				width="24"
-				height="24"
-				viewBox="0 0 24 24"
-				fill="currentColor"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<path
-					d="M12,22 C17.5228475,22 22,17.5228475 22,12 C22,6.4771525 17.5228475,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 Z M12,20.5 L12,3.5 C16.6944204,3.5 20.5,7.30557963 20.5,12 C20.5,16.6944204 16.6944204,20.5 12,20.5 Z"
-				></path>
-			</svg>
-		</button>
 	</body>
 </html>
 
@@ -75,18 +62,44 @@
 		--text-color: #ebd5ab;
 		--shadow-color: #628141;
 		--accent-color: #8bae66;
+		--code-bg: #101510;
+		--code-border: #628141;
+		--code-shadow: #8bae66;
+		--code-keyword: #8bae66;
+		--code-string: #ebd5ab;
+		--code-number: #c7d18b;
+		--code-func: #8bae66;
+		--code-comment: #7a8964;
+		--code-operator: #ebd5ab;
+		--code-constant: #8bae66;
+		--code-type: #ebd5ab;
+		--shiki-foreground: var(--text-color);
+		--shiki-background: var(--code-bg);
+		--shiki-color-text: var(--text-color);
+		--shiki-color-background: var(--code-bg);
+		--shiki-token-constant: var(--code-constant);
+		--shiki-token-string: var(--code-string);
+		--shiki-token-comment: var(--code-comment);
+		--shiki-token-keyword: var(--code-keyword);
+		--shiki-token-parameter: var(--text-color);
+		--shiki-token-function: var(--code-func);
+		--shiki-token-string-expression: var(--code-string);
+		--shiki-token-punctuation: var(--code-operator);
+		--shiki-token-link: var(--accent-color);
 
 		--astro-code-color-text: var(--text-color);
-		--astro-code-color-background: transparent;
-		--astro-code-token-constant: var(--text-color);
-		--astro-code-token-string: var(--text-color);
-		--astro-code-token-comment: var(--text-color);
-		--astro-code-token-keyword: var(--text-color);
+		--astro-code-color-background: var(--code-bg);
+		--astro-code-foreground: var(--text-color);
+		--astro-code-background: var(--code-bg);
+		--astro-code-token-constant: var(--code-constant);
+		--astro-code-token-string: var(--code-string);
+		--astro-code-token-comment: var(--code-comment);
+		--astro-code-token-keyword: var(--code-keyword);
 		--astro-code-token-parameter: var(--text-color);
-		--astro-code-token-function: var(--text-color);
-		--astro-code-token-string-expression: var(--text-color);
-		--astro-code-token-punctuation: var(--text-color);
-		--astro-code-token-link: var(--text-color);
+		--astro-code-token-function: var(--code-func);
+		--astro-code-token-string-expression: var(--code-string);
+		--astro-code-token-punctuation: var(--code-operator);
+		--astro-code-token-link: var(--accent-color);
 	}
 
 	html.dark {
@@ -126,14 +139,16 @@
 	}
 	:global(pre) {
 		padding: 1rem 1.2rem;
-		border: 1px solid var(--accent-color);
-		box-shadow: 6px 6px 0px var(--shadow-color);
-		background-color: #161b15 !important;
+		border: 1px solid var(--code-border);
+		box-shadow: 6px 6px 0px var(--code-shadow);
+		background-color: var(--code-bg) !important;
 		overflow-x: auto;
 	}
 	:global(code) {
-		background-color: transparent !important;
+		background-color: #141a13 !important;
 		color: var(--text-color) !important;
+		padding: 0.1rem 0.25rem;
+		border-radius: 2px;
 	}
 	:global(.astro-code span) {
 		color: var(--text-color) !important;
@@ -143,7 +158,34 @@
 	:global(.astro-code span.token.function),
 	:global(.astro-code span.token.string),
 	:global(.astro-code span.token.number) {
-		color: var(--accent-color) !important;
+		color: var(--code-keyword) !important;
+	}
+	:global(.astro-code span.token.comment) {
+		color: var(--code-comment) !important;
+	}
+	:global(.astro-code span.token.operator),
+	:global(.astro-code span.token.punctuation) {
+		color: var(--code-operator) !important;
+	}
+	:global(.astro-code span.token.constant),
+	:global(.astro-code span.token.builtin),
+	:global(.astro-code span.token.boolean) {
+		color: var(--code-constant) !important;
+	}
+	:global(.astro-code span.token.class-name),
+	:global(.astro-code span.token.type) {
+		color: var(--code-type) !important;
+		text-decoration: underline;
+		text-decoration-color: #628141;
+		text-underline-offset: 3px;
+	}
+	:global(.astro-code span.token.string) {
+		color: var(--code-string) !important;
+	}
+	:global(.astro-code span.token.function),
+	:global(.astro-code span.token.method),
+	:global(.astro-code span.token.property) {
+		color: var(--code-func) !important;
 	}
 	:global(math) {
 		display: none !important;
@@ -190,34 +232,6 @@
 		color: var(--accent-color);
 	}
 
-	#theme-toggle {
-		position: fixed;
-		top: 2rem;
-		left: 2rem;
-		background: var(--bg-color);
-		border: 2px solid var(--text-color);
-		color: var(--text-color);
-		width: 3rem;
-		height: 3rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		cursor: pointer;
-		box-shadow: 4px 4px 0px var(--shadow-color);
-		z-index: 1000;
-		transition:
-			transform 0.1s,
-			box-shadow 0.1s;
-	}
-
-	#theme-toggle:active {
-		transform: translate(2px, 2px);
-		box-shadow: 2px 2px 0px var(--shadow-color);
-	}
-
-	#theme-toggle svg {
-		pointer-events: none;
-	}
 
 	a:focus-visible,
 	button:focus-visible {
@@ -229,29 +243,3 @@
 		color: var(--accent-color);
 	}
 </style>
-
-<script is:inline>
-	function initThemeToggle() {
-		const themeToggle = document.getElementById("theme-toggle");
-		if (themeToggle) {
-			// Remove previous listener to be safe
-			const newToggle = themeToggle.cloneNode(true);
-			themeToggle.parentNode.replaceChild(newToggle, themeToggle);
-
-			newToggle.addEventListener("click", () => {
-				document.documentElement.classList.toggle("dark");
-				const isDark =
-					document.documentElement.classList.contains("dark");
-				localStorage.setItem("theme", isDark ? "dark" : "light");
-			});
-		}
-	}
-
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initThemeToggle);
-	} else {
-		initThemeToggle();
-	}
-
-	document.addEventListener("astro:page-load", initThemeToggle);
-</script>

@@ -33,6 +33,7 @@ const formatDate = (value) => {
     </head>
     <main>
         <header>
+            <a href="/blog" class="btn back-btn">← Back</a>
             <h1>{frontmatter.title}</h1>
             <div class="meta">
                 {
@@ -40,7 +41,6 @@ const formatDate = (value) => {
                         <time>{formatDate(frontmatter.pubDate)}</time>
                     )
                 }
-                <a href="/blog" class="back-link">← Back</a>
             </div>
         </header>
         <article class="content">
@@ -73,19 +73,13 @@ const formatDate = (value) => {
     }
     .meta {
         display: flex;
-        justify-content: space-between;
         align-items: center;
         font-family: "Courier New", Courier, monospace;
         font-size: 0.9rem;
     }
-    .back-link {
-        color: var(--text-color);
-        text-decoration: none;
-        font-weight: bold;
-        border-bottom: 2px solid transparent;
-    }
-    .back-link:hover {
-        border-bottom-color: var(--accent-color);
+    .back-btn {
+        margin-bottom: 1.5rem;
+        width: fit-content;
     }
     .content {
         font-family: "Courier New", Courier, monospace;
@@ -110,21 +104,23 @@ const formatDate = (value) => {
         border-bottom: 2px solid var(--accent-color);
     }
     .content :global(code) {
-        background: transparent;
+        background: #141a13;
         color: var(--text-color);
-        padding: 0.2rem 0.4rem;
+        padding: 0.1rem 0.25rem;
         font-size: 0.9rem;
+        border-radius: 2px;
     }
     .content :global(pre) :global(code) {
         padding: 0;
+        background: transparent;
     }
     .content :global(pre) {
-        background: transparent;
+        background: var(--code-bg);
         color: var(--text-color);
-        padding: 1rem;
+        padding: 1rem 1.2rem;
         overflow-x: auto;
-        border: 1px solid var(--text-color);
-        box-shadow: none;
+        border: 1px solid var(--code-border);
+        box-shadow: 6px 6px 0px var(--code-shadow);
     }
     .content :global(.nb-output-frame) {
         width: 100%;

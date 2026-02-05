@@ -22,8 +22,8 @@ const formatDate = (value) => {
 <Layout>
     <main>
         <header>
+            <a href="/" class="btn back-btn">← Back</a>
             <h1>Blog</h1>
-            <a href="/" class="back-link">← Back</a>
         </header>
         <div class="post-list">
             {
@@ -68,17 +68,9 @@ const formatDate = (value) => {
         font-weight: normal;
         margin: 0;
     }
-    .back-link {
-        display: inline-block;
-        margin-top: 1rem;
-        margin-bottom: 3rem;
-        color: var(--text-color);
-        text-decoration: none;
-        font-weight: bold;
-        border-bottom: 2px solid var(--text-color);
-    }
-    .back-link:hover {
-        border-bottom-color: var(--accent-color);
+    .back-btn {
+        margin-bottom: 2rem;
+        width: fit-content;
     }
     .post-list {
         display: flex;
