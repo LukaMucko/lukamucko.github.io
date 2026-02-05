@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout>
     <main id="contact-container">
-        <button id="reveal-email" class="reveal-btn" type="button">
+        <button id="reveal-email" class="btn reveal-btn" type="button">
             Email Me
         </button>
         <div id="email-box" class="hidden" aria-live="polite">
@@ -28,24 +28,11 @@ import Layout from "../layouts/Layout.astro";
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-family: "Courier New", Courier, monospace;
-        background: var(--bg-color);
-        border: 2px solid var(--text-color);
-        padding: 0.8rem 2rem;
-        font-size: 1.5rem;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 6px 6px 0px var(--shadow-color);
         white-space: nowrap;
         z-index: 1;
-        color: inherit;
-        transition:
-            transform 0.1s,
-            box-shadow 0.1s;
     }
     .reveal-btn:active {
         transform: translate(calc(-50% + 2px), calc(-50% + 2px));
-        box-shadow: 2px 2px 0px var(--shadow-color);
     }
 
     #email-box {

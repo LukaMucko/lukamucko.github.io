@@ -77,6 +77,9 @@ const formatDate = (value) => {
         font-weight: bold;
         border-bottom: 2px solid var(--text-color);
     }
+    .back-link:hover {
+        border-bottom-color: var(--accent-color);
+    }
     .post-list {
         display: flex;
         flex-direction: column;
@@ -90,9 +93,16 @@ const formatDate = (value) => {
             transform 0.1s,
             box-shadow 0.1s;
     }
+    html.dark .post-item {
+        box-shadow: 4px 4px 0px var(--accent-color);
+    }
     .post-item:hover {
         transform: translate(-2px, -2px);
         box-shadow: 6px 6px 0px var(--shadow-color);
+        border-color: var(--accent-color);
+    }
+    html.dark .post-item:hover {
+        box-shadow: 6px 6px 0px var(--accent-color);
     }
     .post-link {
         display: flex;
@@ -121,6 +131,11 @@ const formatDate = (value) => {
         color: var(--text-color);
         opacity: 0.7;
         font-size: 0.9rem;
+    }
+    .post-date::before {
+        content: "•";
+        color: var(--accent-color);
+        margin-right: 0.4rem;
     }
     .post-description {
         margin: 0;
