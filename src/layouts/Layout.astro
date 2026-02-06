@@ -117,10 +117,16 @@
 	html {
 		height: 100%;
 		width: 100%;
+		background-image: linear-gradient(
+			135deg,
+			#1b211a 0%,
+			#364232 100%
+		);
+		background-attachment: fixed;
 	}
 
 	body {
-		background-color: var(--bg-color);
+		background-color: transparent;
 		color: var(--text-color);
 		font-family: "Courier New", Courier, monospace;
 		transition:
@@ -131,6 +137,7 @@
 		min-height: 100%;
 		width: 100%;
 		overflow-x: hidden;
+		position: relative;
 	}
 
 	/* Global Code Styles */
