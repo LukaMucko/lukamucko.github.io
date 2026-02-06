@@ -216,21 +216,41 @@
 		font-size: 1.5rem;
 		font-weight: bold;
 		cursor: pointer;
-		box-shadow: 6px 6px 0px var(--accent-color);
+		--btn-shadow: 4px;
+		--btn-shadow-hover: 6px;
+		--btn-shadow-active: 2px;
+		box-shadow: var(--btn-shadow) var(--btn-shadow) 0px
+			var(--shadow-color);
 		text-decoration: none;
 		color: inherit;
 		display: inline-block;
 		position: relative;
 		z-index: 1;
-		transition: transform 0.1s;
+		transition:
+			transform 0.1s,
+			box-shadow 0.1s;
+	}
+	html.dark .btn {
+		box-shadow: var(--btn-shadow) var(--btn-shadow) 0px
+			var(--accent-color);
 	}
 	.btn:active {
 		transform: translate(2px, 2px);
-		box-shadow: 2px 2px 0px var(--accent-color);
+		box-shadow: var(--btn-shadow-active) var(--btn-shadow-active) 0px
+			var(--shadow-color);
+	}
+	html.dark .btn:active {
+		box-shadow: var(--btn-shadow-active) var(--btn-shadow-active) 0px
+			var(--accent-color);
 	}
 	.btn:hover {
-		border-color: var(--accent-color);
-		color: var(--accent-color);
+		transform: translate(-2px, -2px);
+		box-shadow: var(--btn-shadow-hover) var(--btn-shadow-hover) 0px
+			var(--shadow-color);
+	}
+	html.dark .btn:hover {
+		box-shadow: var(--btn-shadow-hover) var(--btn-shadow-hover) 0px
+			var(--accent-color);
 	}
 
 
@@ -241,7 +261,7 @@
 	}
 
 	a:hover {
-		color: var(--accent-color);
+		color: inherit;
 	}
 
 	.page-main {
