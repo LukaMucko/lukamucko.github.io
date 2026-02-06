@@ -58,6 +58,7 @@
 
 <style is:global>
 	:root {
+		--page-width: 1200px;
 		--bg-color: #1b211a;
 		--text-color: #ebd5ab;
 		--shadow-color: #628141;
@@ -241,5 +242,21 @@
 
 	a:hover {
 		color: var(--accent-color);
+	}
+
+	.page-main {
+		padding: 4rem;
+		max-width: var(--page-width);
+		width: min(100%, var(--page-width));
+		margin: 0 auto;
+		position: relative;
+		min-height: 100vh;
+		box-sizing: border-box;
+	}
+
+	@media (max-width: 768px) {
+		.page-main {
+			padding: 2rem;
+		}
 	}
 </style>

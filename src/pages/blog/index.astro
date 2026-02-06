@@ -20,8 +20,8 @@ const formatDate = (value) => {
 ---
 
 <Layout>
-    <main>
-        <header>
+    <main class="page-main">
+        <header class="page-header">
             <a href="/" class="btn back-btn">← Back</a>
             <h1>Blog</h1>
         </header>
@@ -54,28 +54,29 @@ const formatDate = (value) => {
 </Layout>
 
 <style>
-    main {
-        padding: 4rem;
-        max-width: 1200px;
-        margin: 0 auto;
-        position: relative;
-        min-height: 100vh;
-        box-sizing: border-box;
+    .page-header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 1rem;
     }
-    header h1 {
+    .page-header h1 {
         font-family: "Courier";
         font-size: 2.5rem;
         font-weight: normal;
         margin: 0;
     }
     .back-btn {
-        margin-bottom: 2rem;
         width: fit-content;
     }
     .post-list {
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+        margin-top: 0.75rem;
     }
     .post-item {
         border: 2px solid var(--text-color);

@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-  <main>
+  <main class="page-main">
     <header>
       <h1>Luka <span>Mucko</span></h1>
       <p id="status-line" class="status">Zagreb · --:--</p>
@@ -32,14 +32,6 @@ import Layout from "../layouts/Layout.astro";
   </main>
 </Layout>
 <style>
-  main {
-    padding: 4rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-    min-height: 100vh;
-    box-sizing: border-box;
-  }
   header h1 {
     font-family: "Courier";
     font-size: 2.5rem;
@@ -143,9 +135,6 @@ import Layout from "../layouts/Layout.astro";
     display: none !important;
   }
   @media (max-width: 768px) {
-    main {
-      padding: 2rem;
-    }
     header h1 {
       font-size: 1.8rem;
     }
