@@ -266,15 +266,12 @@ import Layout from "../layouts/Layout.astro";
 </style>
 
 <script>
-  const btn = document.querySelector(".main-btn") as HTMLButtonElement | null;
+  const btn = document.querySelector(".main-btn");
   const modal = document.getElementById("email-modal");
   const workEmailValue = document.getElementById("work-email-value");
   const personalEmailValue = document.getElementById("personal-email-value");
-  const copyButtons = Array.from(
-    document.querySelectorAll(".copy-btn"),
-  ) as HTMLButtonElement[];
   const statusLine = document.getElementById("status-line");
-  const closeBtn = document.querySelector(".modal-close") as HTMLButtonElement | null;
+  const closeBtn = document.querySelector(".modal-close");
   const encodedWorkEmail = "BwgMCA4WKwQQHw0AGQRXChE=";
   const encodedPersonalEmail = "BxASCksUHgYSBCUeBgQQB0saBAg=";
   const key = "key";
@@ -323,7 +320,7 @@ import Layout from "../layouts/Layout.astro";
     document.body.removeChild(temp);
   };
 
-  copyButtons.forEach((copyBtn) => {
+  for (const copyBtn of document.querySelectorAll(".copy-btn")) {
     copyBtn.addEventListener("click", async (e) => {
       e.stopPropagation();
       const decoded =
@@ -336,7 +333,7 @@ import Layout from "../layouts/Layout.astro";
         copyBtn.textContent = "Copy";
       }, 1200);
     });
-  });
+  }
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modal && !modal.classList.contains("hidden")) {
