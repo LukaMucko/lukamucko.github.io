@@ -272,9 +272,9 @@ import Layout from "../layouts/Layout.astro";
   const personalEmailValue = document.getElementById("personal-email-value");
   const statusLine = document.getElementById("status-line");
   const closeBtn = document.querySelector(".modal-close");
-  const encodedWorkEmail = "BwgMCA4WKwQQHw0AGQRXChE=";
-  const encodedPersonalEmail = "BxASCksUHgYSBCUeBgQQB0saBAg=";
-  const key = "key";
+  const key = "secret key";
+  const encodedWorkEmail = "HwgWEQ4bYAoMDRscERNLFVQ=";
+  const encodedPersonalEmail = "HxAIE0sZVQgOFjMCDhMMGA4IChQ=";
 
   const decodeEmail = (encoded: string, secret: string) => {
     const bytes = Uint8Array.from(atob(encoded), (c) => c.charCodeAt(0));
@@ -287,13 +287,39 @@ import Layout from "../layouts/Layout.astro";
     return result;
   };
 
+  const encodeEmail = (text: string, secret: string) => {
+    const bytes = Array.from(text, (char, i) =>
+      char.charCodeAt(0) ^ secret.charCodeAt(i % secret.length),
+    );
+    return btoa(String.fromCharCode(...bytes));
+  };
+
+  const revealEmails = () => {
+    const decodedWork = decodeEmail(encodedWorkEmail, key);
+    const decodedPersonal = decodeEmail(encodedPersonalEmail, key);
+    if (workEmailValue) workEmailValue.textContent = decodedWork;
+    if (personalEmailValue) personalEmailValue.textContent = decodedPersonal;
+  };
+
+  const hideEmails = () => {
+    if (workEmailValue) {
+      workEmailValue.textContent = encodeEmail(
+        decodeEmail(encodedWorkEmail, key),
+        key,
+      );
+    }
+    if (personalEmailValue) {
+      personalEmailValue.textContent = encodeEmail(
+        decodeEmail(encodedPersonalEmail, key),
+        key,
+      );
+    }
+  };
+
   if (btn) {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      const decodedWork = decodeEmail(encodedWorkEmail, key);
-      const decodedPersonal = decodeEmail(encodedPersonalEmail, key);
-      if (workEmailValue) workEmailValue.textContent = decodedWork;
-      if (personalEmailValue) personalEmailValue.textContent = decodedPersonal;
+      revealEmails();
       if (modal) modal.classList.remove("hidden");
     });
   }
@@ -301,6 +327,7 @@ import Layout from "../layouts/Layout.astro";
   const closeModal = () => {
     if (modal && !modal.classList.contains("hidden")) {
       modal.classList.add("hidden");
+      hideEmails();
     }
   };
 
@@ -365,4 +392,5 @@ import Layout from "../layouts/Layout.astro";
 
   updateStatus();
   setInterval(updateStatus, 30000);
+  hideEmails();
 </script>
