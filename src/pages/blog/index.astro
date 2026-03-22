@@ -1,6 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-const allPosts = await Astro.glob("./*.{md,mdx}");
+const allPosts = Object.values(
+    import.meta.glob("./*.{md,mdx}", { eager: true }),
+);
 const sortedPosts = allPosts.sort((a, b) => {
     return (
         new Date(b.frontmatter.pubDate || 0).valueOf() -

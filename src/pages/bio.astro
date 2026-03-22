@@ -1,0 +1,181 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <main class="page-main">
+    <header class="page-header">
+      <a href="/" class="btn back-btn">← Back</a>
+      <h1>Bio</h1>
+      <p class="intro">
+        I work in scientific machine learning. Right now I am a Scientific
+        Intern at AITHYRA in Vienna, working with
+        <a href="https://www.alextong.net/" target="_blank" rel="noreferrer"
+          >Alex Tong</a
+        >.
+      </p>
+    </header>
+
+    <section class="timeline">
+      <article class="timeline-row">
+        <p class="timeline-time">Mar 2026 - Sep 2026</p>
+        <div class="timeline-copy">
+          <p class="timeline-title">AITHYRA · Vienna</p>
+          <p>
+            I am a Scientific Intern working on generative models for
+            biological systems and AI for medical sciences.
+          </p>
+        </div>
+      </article>
+
+      <article class="timeline-row">
+        <p class="timeline-time">May 2025 - Nov 2025</p>
+        <div class="timeline-copy">
+          <p class="timeline-title">University of Toronto · Matter Lab</p>
+          <p>
+            I was a Visiting Graduate Student in
+            <a href="https://www.matter.toronto.edu/" target="_blank" rel="noreferrer"
+              >Matter Lab</a
+            >, where I was supervised by Alán Aspuru-Guzik and worked with
+            Austin Cheng and Abdulrahman Aldossary.
+          </p>
+        </div>
+      </article>
+
+      <article class="timeline-row">
+        <p class="timeline-time">Aug 2023 - Jan 2024</p>
+        <div class="timeline-copy">
+          <p class="timeline-title">
+            Radboud University · Erasmus Exchange
+          </p>
+          <p>
+            I spent part of my studies in Nijmegen as an Erasmus exchange
+            student in Computer Science.
+          </p>
+        </div>
+      </article>
+
+      <article class="timeline-row">
+        <p class="timeline-time">Aug 2023 - Feb 2026</p>
+        <div class="timeline-copy">
+          <p class="timeline-title">
+            University of Zagreb · MSc in Computing, Data Science
+          </p>
+          <p>
+            My studies with
+            <a href="https://www.linkedin.com/in/dbojanjac/" target="_blank" rel="noreferrer"
+              >Prof. Dario Bojanjac</a
+            >
+            focused on diffusion models, sampling, statistical machine
+            learning, and geometric deep learning.
+          </p>
+        </div>
+      </article>
+
+      <article class="timeline-row">
+        <p class="timeline-time">Aug 2022 - Sep 2022</p>
+        <div class="timeline-copy">
+          <p class="timeline-title">Ruđer Bošković Institute · Zagreb</p>
+          <p>
+            I did a summer internship on high-performance linear algebra
+            algorithms.
+          </p>
+        </div>
+      </article>
+
+      <article class="timeline-row">
+        <p class="timeline-time">Oct 2020 - Jul 2023</p>
+        <div class="timeline-copy">
+          <p class="timeline-title">University of Zagreb · BSc in Computing</p>
+          <p>
+            Before that, I completed my bachelor's degree in Computing in
+            Zagreb.
+          </p>
+        </div>
+      </article>
+
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+    max-width: 48rem;
+  }
+  .page-header h1 {
+    font-family: "Courier";
+    font-size: 3rem;
+    font-weight: normal;
+    margin: 0;
+  }
+  .back-btn {
+    width: fit-content;
+  }
+  .intro {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    opacity: 0.92;
+  }
+  .intro a,
+  .timeline-copy a {
+    color: var(--text-color);
+    text-decoration: none;
+    border-bottom: 2px solid var(--accent-color);
+  }
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 980px;
+  }
+  .timeline-row {
+    display: grid;
+    grid-template-columns: 13rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    padding: 1rem 1.25rem;
+    border: 2px solid var(--text-color);
+    box-shadow: 4px 4px 0px var(--shadow-color);
+    background: rgba(16, 21, 16, 0.45);
+  }
+  .timeline-time {
+    margin: 0;
+    font-family: "Courier";
+    font-size: 0.95rem;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .timeline-copy {
+    min-width: 0;
+  }
+  .timeline-title {
+    margin: 0 0 0.35rem;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  .timeline-copy p:last-child {
+    margin: 0;
+    line-height: 1.6;
+  }
+  @media (max-width: 768px) {
+    .page-header h1 {
+      font-size: 2.15rem;
+    }
+    .timeline-row {
+      grid-template-columns: 1fr;
+      gap: 0.45rem;
+    }
+    .intro,
+    .timeline-title,
+    .timeline-copy p:last-child {
+      font-size: 0.98rem;
+    }
+  }
+</style>
