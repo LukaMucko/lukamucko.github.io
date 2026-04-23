@@ -16,21 +16,48 @@ const formatDate = (value) => {
 };
 ---
 
-<Layout>
-    <head>
-        <title>{title}</title>
-        {description && <meta name="description" content={description} />}
-        {canonical && <link rel="canonical" href={canonical.toString()} />}
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={title} />
-        {description && <meta property="og:description" content={description} />}
-        {canonical && <meta property="og:url" content={canonical.toString()} />}
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content={title} />
-        {description && (
-            <meta name="twitter:description" content={description} />
-        )}
-    </head>
+<Layout
+    title={title}
+    description={description}
+    ogType="article"
+    canonical={canonical?.toString()}
+>
+    <Fragment slot="head">
+        {
+            frontmatter.math !== false && (
+                <>
+                    <script is:inline>
+                        window.MathJax = {
+                            tex: {
+                                inlineMath: [
+                                    ["$", "$"],
+                                    ["\\(", "\\)"],
+                                ],
+                                displayMath: [
+                                    ["$$", "$$"],
+                                    ["\\[", "\\]"],
+                                ],
+                            },
+                            options: {
+                                skipHtmlTags: [
+                                    "script",
+                                    "noscript",
+                                    "style",
+                                    "textarea",
+                                    "pre",
+                                    "code",
+                                ],
+                            },
+                        };
+                    </script>
+                    <script
+                        async
+                        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+                    />
+                </>
+            )
+        }
+    </Fragment>
     <main class="page-main">
         <header class="page-header">
             <a href="/blog" class="btn back-btn">← Back</a>
@@ -47,6 +74,7 @@ const formatDate = (value) => {
             <slot />
         </article>
     </main>
+    <script type="module" src="/scripts/interactive-figures.js"></script>
 </Layout>
 
 <style>
@@ -115,40 +143,21 @@ const formatDate = (value) => {
         border: 1px solid var(--code-border);
         box-shadow: 6px 6px 0px var(--code-shadow);
     }
-    .content :global(.nb-output-frame) {
-        width: 100%;
-        min-height: 120px;
-        border: 1px solid var(--text-color);
-        box-shadow: none;
-        background: transparent;
+    .content :global(.interactive-figure > *) {
         display: block;
-        margin: 0.75rem 0;
+        font-size: initial;
+        line-height: normal;
     }
-    .content :global(.nb-output-text) {
-        border: 1px solid var(--text-color);
-        padding: 1rem;
-        background: transparent;
-        margin: 0.75rem 0;
-        overflow-x: auto;
-        white-space: pre-wrap;
+    .content :global(.interactive-figure) {
+        margin: 2rem calc(50% - min(46vw, 620px));
+        border: 2px solid var(--text-color);
+        background: var(--bg-color);
+        box-shadow: 8px 8px 0px var(--accent-color);
+        overflow: hidden;
     }
-    .content :global(.nb-output-image) {
-        display: block;
-        max-width: 100%;
-        margin: 0.75rem 0;
+    @media (max-width: 760px) {
+        .content :global(.interactive-figure) {
+            margin: 2rem -1rem;
+        }
     }
 </style>
-
-<script>
-    const handleMessage = (event) => {
-        if (event.origin !== window.location.origin) return;
-        const data = event.data;
-        if (!data || data.type !== "nb-iframe-height") return;
-        const frame = document.getElementById(data.id);
-        if (frame && frame.tagName === "IFRAME" && data.height) {
-            frame.style.height = `${data.height}px`;
-        }
-    };
-
-    window.addEventListener("message", handleMessage);
-</script>

@@ -6,7 +6,7 @@ export async function GET({ site }) {
     );
   }
 
-  const posts = await import.meta.glob("./blog/*.{md,mdx}", {
+  const posts = await import.meta.glob("./blog/*.md", {
     eager: true,
   });
 

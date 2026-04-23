@@ -3,21 +3,12 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "node scripts/nb-processor.mjs --watch & astro dev",
+    "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "gen-blog": "node scripts/nb-processor.mjs"
+    "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.13",
-    "@astrojs/react": "^4.4.2",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "astro": "^5.16.6",
-    "plotly.js-dist-min": "^3.3.1",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "react-plotly.js": "^2.6.0"
+    "astro": "^5.16.6"
   }
 }

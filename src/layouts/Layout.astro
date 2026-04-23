@@ -1,3 +1,15 @@
+---
+const defaultTitle = "Luka Mucko";
+const defaultDescription =
+	"Scientific intern at AITHYRA working on crystal structure prediction, SCF, DFT, and scientific machine learning.";
+const {
+	title = defaultTitle,
+	description = defaultDescription,
+	ogType = "website",
+	canonical,
+} = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -5,23 +17,16 @@
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Luka Mucko</title>
-		<meta
-			name="description"
-			content="Scientific intern at AITHYRA working on crystal structure prediction, SCF, DFT, and scientific machine learning."
-		/>
-		<meta property="og:title" content="Luka Mucko" />
-		<meta
-			property="og:description"
-			content="Scientific intern at AITHYRA working on crystal structure prediction, SCF, DFT, and scientific machine learning."
-		/>
-		<meta property="og:type" content="website" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		{canonical && <link rel="canonical" href={canonical} />}
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content={ogType} />
+		{canonical && <meta property="og:url" content={canonical} />}
 		<meta name="twitter:card" content="summary" />
-		<meta name="twitter:title" content="Luka Mucko" />
-		<meta
-			name="twitter:description"
-			content="Scientific intern at AITHYRA working on crystal structure prediction, SCF, DFT, and scientific machine learning."
-		/>
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -50,6 +55,7 @@
 				document.documentElement.classList.add("dark");
 			}
 		</script>
+		<slot name="head" />
 	</head>
 	<body>
 		<slot />
@@ -126,7 +132,7 @@
 	}
 
 	body {
-		background-color: transparent;
+		background-color: var(--bg-color);
 		color: var(--text-color);
 		font-family: "Courier New", Courier, monospace;
 		transition:
