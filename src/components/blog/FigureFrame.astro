@@ -1,0 +1,89 @@
+---
+const {
+  title,
+  subtitle,
+  badge,
+} = Astro.props;
+---
+
+<div class="interactive-figure">
+  <section class="figure-frame">
+    {(title || subtitle || badge) && (
+      <header class="figure-frame__header">
+        <div>
+          {title && <h2>{title}</h2>}
+          {subtitle && <p>{subtitle}</p>}
+        </div>
+        {badge && <div class="figure-frame__badge">{badge}</div>}
+      </header>
+    )}
+    {Astro.slots.has("controls") && (
+      <div class="figure-frame__controls">
+        <slot name="controls" />
+      </div>
+    )}
+    <div class="figure-frame__viewport">
+      <slot />
+    </div>
+  </section>
+</div>
+
+<style>
+  .figure-frame {
+    display: grid;
+    background: var(--bg-color);
+  }
+
+  .figure-frame__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    border-bottom: 2px solid var(--text-color);
+    font-family: "Courier New", Courier, monospace;
+  }
+
+  .figure-frame__header h2 {
+    margin: 0 0 0.15rem;
+    font-family: "Courier";
+    font-size: 1.15rem;
+    font-weight: normal;
+  }
+
+  .figure-frame__header p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+
+  .figure-frame__badge {
+    flex: 0 0 auto;
+    padding: 0.35rem 0.55rem;
+    border: 1px solid var(--text-color);
+    background: rgba(139, 174, 102, 0.08);
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.82rem;
+    line-height: 1;
+  }
+
+  .figure-frame__controls {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid rgba(235, 213, 171, 0.18);
+  }
+
+  .figure-frame__viewport {
+    width: 100%;
+    min-height: 300px;
+    background:
+      radial-gradient(circle at 50% 20%, rgba(139, 174, 102, 0.14), transparent 50%),
+      linear-gradient(180deg, rgba(54, 66, 50, 0.35), rgba(27, 33, 26, 0));
+  }
+
+  @media (max-width: 720px) {
+    .figure-frame__header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
